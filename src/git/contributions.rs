@@ -1,6 +1,6 @@
 use git2::DiffStats;
 
-use super::client::GhRepo;
+use super::kit::GRepo;
 
 #[derive(Debug, Default)]
 pub struct Contribution {
@@ -17,7 +17,7 @@ impl Contribution {
     }
 }
 
-impl GhRepo {
+impl GRepo {
     pub fn get_entire_repo_contribution(&self) -> Result<Contribution, git2::Error> {
         let mut contrib = Contribution::default();
         for commit in self.iter_commits()? {

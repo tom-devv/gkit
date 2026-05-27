@@ -2,14 +2,14 @@ use std::{collections::HashSet, path::Path};
 
 use git2::{Commit, Diff, Error, Oid, Repository};
 
-pub struct GhRepo {
+pub struct GRepo {
     inner: Repository,
 }
 
-impl GhRepo {
-    pub fn open<P: AsRef<Path>>(path: P) -> Result<GhRepo, Error> {
+impl GRepo {
+    pub fn open<P: AsRef<Path>>(path: P) -> Result<GRepo, Error> {
         let repo = Repository::open(path)?;
-        Ok(GhRepo { inner: repo })
+        Ok(GRepo { inner: repo })
     }
 
     pub fn get_all_commits<'a>(&'a self) -> Result<Vec<Commit<'a>>, Error> {
@@ -55,10 +55,10 @@ impl GhRepo {
         Ok(authors)
     }
 
-    pub fn get_author_commits<'a>(
-        &'a self,
+    pub fn get_author_commits(
+        &self,
         email: String,
-    ) -> Result<impl Iterator<Item = Commit<'a>> + 'a, git2::Error> {
+    ) -> Result<impl Iterator<Item = Commit<'_>>, git2::Error> {
         let iter = self
             .iter_commits()?
             .filter(move |commit| commit.author().email().map_or(false, |e| e == email));
@@ -87,5 +87,12 @@ impl GhRepo {
         };
 
         self.get_diff(parent_commit.as_ref(), Some(commit))
+    }
+
+    pub fn iter_all_diffs(&self) -> Result<impl Iterator<Item = Diff<'_>>, git2::Error> {
+        let diffs = self
+            .iter_commits()?
+            .filter_map(|commit| self.get_parent_diff(&commit).ok());
+        Ok(diffs)
     }
 }

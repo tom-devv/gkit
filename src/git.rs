@@ -1,2 +1,2 @@
-pub mod client;
 pub mod contributions;
+pub mod kit;

@@ -1,2 +1,2 @@
 pub mod git;
-pub mod insights;
+pub mod metrics;
