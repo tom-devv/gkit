@@ -1,10 +1,6 @@
-use std::{
-    collections::{self, HashMap},
-    iter::Map,
-};
+use std::collections::HashMap;
 
 use chrono::{DateTime, TimeDelta, Utc};
-use git2::ConfigLevel::Global;
 
 use crate::git::kit::GRepo;
 #[derive(Debug)]
@@ -77,4 +73,16 @@ fn telescope_time(datetimes: &[DateTime<Utc>]) -> Option<TimeDelta> {
     let count = (datetimes.len() - 1) as i32;
 
     total_duration.checked_div(count)
+}
+
+use super::RenderMetric;
+use ratatui::{
+    Frame,
+    layout::{Constraint, Layout, Rect},
+    style::{Color, Modifier, Style},
+    widgets::{Block, Borders, Paragraph, Row, Table},
+};
+
+impl RenderMetric for CadenceMetric {
+    fn render(&self, frame: &mut Frame, area: Rect) {}
 }
