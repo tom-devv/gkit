@@ -610,7 +610,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "gkit"
+name = "gitkit"
 version = "0.1.0"
 dependencies = [
  "chrono",

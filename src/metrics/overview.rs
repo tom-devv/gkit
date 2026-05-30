@@ -1,7 +1,4 @@
-use ratatui::{
-    layout::Layout,
-    widgets::{Block, Borders, RenderDirection},
-};
+use ratatui::widgets::{Block, Borders};
 
 use crate::{metrics::RenderMetric, tui::state::State};
 
@@ -13,7 +10,7 @@ impl RenderMetric for OverviewMetric {
         &self,
         frame: &mut ratatui::prelude::Frame,
         area: ratatui::prelude::Rect,
-        state: &State,
+        _state: &State,
     ) {
         let block_widg = Block::default()
             .title("Overview")

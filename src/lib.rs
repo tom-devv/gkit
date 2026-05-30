@@ -3,13 +3,13 @@ use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyModifiers},
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use std::{io, panic, rc::Rc, time::Duration};
+use std::{io, panic, time::Duration};
 
 use ratatui::{
     Frame, Terminal,
     backend::CrosstermBackend,
     layout::{Constraint, Layout, Rect},
-    style::{Color, Style},
+    style::Color,
     widgets::Block,
 };
 
@@ -20,7 +20,7 @@ use crate::{
     tui::{
         state::State,
         ui::{
-            Page::{self, Overview},
+            Page::{self},
             nav,
         },
     },

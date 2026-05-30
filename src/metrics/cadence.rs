@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use chrono::{DateTime, TimeDelta, Utc};
-use git2::ErrorCode::Auth;
 
 use crate::{git::kit::GRepo, tui::state::State};
 #[derive(Debug)]
