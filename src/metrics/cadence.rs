@@ -1,8 +1,9 @@
 use std::collections::HashMap;
 
 use chrono::{DateTime, TimeDelta, Utc};
+use git2::ErrorCode::Auth;
 
-use crate::git::kit::GRepo;
+use crate::{git::kit::GRepo, tui::state::State};
 #[derive(Debug)]
 pub struct CadenceMetric {
     pub global_commits_per_day: f32,
@@ -79,10 +80,44 @@ use super::RenderMetric;
 use ratatui::{
     Frame,
     layout::{Constraint, Layout, Rect},
-    style::{Color, Modifier, Style},
-    widgets::{Block, Borders, Paragraph, Row, Table},
+    widgets::{Block, Borders, Padding},
 };
 
 impl RenderMetric for CadenceMetric {
-    fn render(&self, frame: &mut Frame, area: Rect) {}
+    fn render(&self, frame: &mut Frame, area: Rect, state: &State) {
+        let block_widg = Block::default()
+            .title("Cadence")
+            .title_alignment(ratatui::layout::HorizontalAlignment::Center)
+            .borders(Borders::ALL)
+            .padding(Padding::horizontal(1));
+
+        frame.render_widget(block_widg.clone(), area);
+
+        let inner_area = block_widg.inner(area);
+
+        if let Some(cadence) = &state.cadence {
+            let items = &cadence.author_commits_per_day;
+
+            let constraints: Vec<Constraint> =
+                items.iter().map(|_| Constraint::Length(1)).collect();
+
+            let chunks = Layout::vertical(constraints).split(inner_area);
+
+            for (item, chunk) in items.iter().zip(chunks.iter()) {
+                let text = ratatui::text::Line::from(vec![
+                    ratatui::text::Span::styled(
+                        format!("{:<15}", item.0),
+                        ratatui::style::Style::default()
+                            .add_modifier(ratatui::style::Modifier::BOLD),
+                    ),
+                    ratatui::text::Span::styled(
+                        format!(" {} commits per day", item.1),
+                        ratatui::style::Style::default().fg(ratatui::style::Color::Cyan),
+                    ),
+                ]);
+
+                frame.render_widget(text, *chunk);
+            }
+        };
+    }
 }

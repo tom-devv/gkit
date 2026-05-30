@@ -1,12 +1,13 @@
-use std::path::PathBuf;
+use std::process;
 
-use gkit::{
-    git::kit::GRepo,
-    metrics::{RenderMetric, cadence::CadenceMetric},
-};
-use ratatui::{
-    DefaultTerminal, Frame,
-    widgets::{Block, Borders},
-};
+use clap::Parser;
+use gkit::GKitArgs;
 
-fn main() {}
+fn main() {
+    let args = GKitArgs::parse();
+
+    match gkit::run(args) {
+        Ok(_) => process::exit(1),
+        Err(err) => eprintln!("Process failed with: {}", err),
+    }
+}

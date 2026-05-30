@@ -1,7 +1,7 @@
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub enum Kit {
+pub enum Error {
     #[error("git error: {0}")]
     GitError(#[from] git2::Error),
 
@@ -15,4 +15,4 @@ pub enum Kit {
     RatatuiError(String),
 }
 
-pub type Result<T> = std::result::Result<T, Kit>;
+pub type Result<T> = std::result::Result<T, Error>;

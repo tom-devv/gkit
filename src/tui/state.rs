@@ -1,21 +1,23 @@
-use crate::error::Result;
+use crate::metrics::cadence::CadenceMetric;
+use crate::metrics::overview::OverviewMetric;
 use crate::tui::ui::Page;
 
+#[derive(Default)]
 pub struct State {
+    pub is_quit: bool,
     pub loading: bool,
     pub page: Page,
+    pub overview: Option<OverviewMetric>,
+    pub cadence: Option<CadenceMetric>,
 }
 
 impl State {
-    /**
-     * By default new stats will be loading
-     */
-    pub fn new() -> Result<State> {
-        let state = State {
+    //By default new stats will be loading
+    pub fn new() -> State {
+        State {
             loading: true,
-            page: Page::Overview,
-        };
-        Ok(state)
+            ..Default::default()
+        }
     }
 
     pub fn tab(&mut self) -> Page {
